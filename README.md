@@ -42,6 +42,13 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
                      (FileStream concreteStream readOnlyFileNamed: fileName)
         ]   
 
+		
+### Test in MSWindows 7
+
+File in Win32Shell.st and evaluate the examples in the class comment. OK
+
+Win32Shell.st is a class which is part of FFI-Win32-tbn.11.mcz		
+		
 
 ### Status
 
