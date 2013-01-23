@@ -45,12 +45,11 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
 
 ### Status
 
-As of now FFI.pck.st is a 1:1 copy of https://github.com/bpieber/Cuis-StyledTextEditor/blob/master/FFI.pck
+This port started as with a 1:1 copy of FFI.pck.st from https://github.com/bpieber/Cuis-StyledTextEditor/blob/master/FFI.pck 
 
-This represents the status of http://source.squeak.org/FFI of March/April 2012
+That represents the status of http://source.squeak.org/FFI of March/April 2012
 
-
-In the folder 'original' there are the Monticello files from http://source.squeak.org/FFI as of January 2013. 
+Here in the folder 'original' there are the Monticello files from http://source.squeak.org/FFI as of January 2013. 
 
 They have been included, see PortingNotes.md in the notes subdirectory. This newly includes the FFI-Tests package.
 
