@@ -1,4 +1,4 @@
-If you want to directly load the original mcz files from www.squeaksource the following class definitions have to be executed manually in a Workspace
+Assuming you want to redo the port from scratch by directly loading the original Squeak Monticello files you from www.squeaksource.com the following class definitions have to be executed manually in a Workspace before the loading.
 
 
 
@@ -30,6 +30,8 @@ If you want to directly load the original mcz files from www.squeaksource the fo
     poolDictionaries: ''
 	
     category: 'FFI-Kernel'.
+	
+	
 
 Afterwards do
 
@@ -49,3 +51,6 @@ And
 
 
     ExternalStructure
+	
+	
+........ (incomplete, this path was not persued further as of January 2013)
