@@ -40,5 +40,8 @@ As of now FFI.pck.st is a 1:1 copy of https://github.com/bpieber/Cuis-StyledText
 This represents the status of http://source.squeak.org/FFI of March/April 2012
 
 
-In the folder 'original' there are the Monticello files from www.squeaksource.com  as of January 2013. 
-They have not been included yet.
+In the folder 'original' there are the Monticello files from www.squeaksource.com as of January 2013. 
+
+They have been included, see PortingNotes.md in the notes subdirectory. This newly includes the FFI-Tests package.
+
+3 tests still fail.
