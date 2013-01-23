@@ -1,20 +1,30 @@
 Cuis-FFI
 ========
 
-FFI port from http://source.squeak.org/FFI for Cuis.
+FFI port from http://source.squeak.org/FFI for Cuis Smalltalk https://github.com/jvuletich/Cuis
 
 
 The port contains
 
 * FFI-Kernel
 * FFI-Pools
+* FFI-Tests
 
-### Discussion on Cuis mailing list ###
+
+### What is FFI and what is it used for?
+
+FFI, the Squeak Foreign Function Interface, is used to call functions located in shared libraries that are not part of the Squeak VM nor its plugins. It also provides means to read and write memory structures that are associated with the use of those shared libraries. A typical use is to directly invoke operating system APIs. As such, applications that use FFI can only be used on the platform(s) that support the particular API being used. C conventions are used throughout, though the external function could have been written by any language capable of generating object code that follows C conventions. 
+
+
+Source: http://wiki.squeak.org/squeak/1414
+
+
+### Discussion on Cuis mailing list
 
 http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
 
 
-### Installation ###
+### Installation
 
     "Load Foreign Function Interface (FFI)"
 
@@ -33,7 +43,7 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
         ]   
 
 
-### Status ###
+### Status
 
 As of now FFI.pck.st is a 1:1 copy of https://github.com/bpieber/Cuis-StyledTextEditor/blob/master/FFI.pck
 
