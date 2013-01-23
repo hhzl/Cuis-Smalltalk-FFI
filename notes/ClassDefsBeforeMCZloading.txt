@@ -1,0 +1,51 @@
+If you want to directly load the original mcz files from www.squeaksource the following class definitions have to be executed manually in a Workspace
+
+
+
+    Object subclass: #ExternalType
+
+    instanceVariableNames: 'compiledSpec referentClass referencedType'
+
+    classVariableNames: 'AtomicSelectors AtomicTypeNames AtomicTypes StructTypes'
+	    poolDictionaries: 'FFIConstants'
+
+    category: 'FFI-Kernel'.
+
+    ByteArray variableByteSubclass: #ExternalAddress
+	
+    instanceVariableNames: ''
+	
+    classVariableNames: ''
+
+    poolDictionaries: ''
+	
+    category: 'FFI-Kernel'.
+
+    Object subclass: #ExternalObject
+	
+    instanceVariableNames: 'handle'
+
+    classVariableNames: ''
+
+    poolDictionaries: ''
+	
+    category: 'FFI-Kernel'.
+
+Afterwards do
+
+
+    ExternalObject subclass: #ExternalFunction
+
+    instanceVariableNames: 'flags argTypes'
+	
+    classVariableNames: 'FFIErrorMessages'
+
+    poolDictionaries: ''
+
+    category: 'FFI-Kernel'.
+
+
+And
+
+
+    ExternalStructure
