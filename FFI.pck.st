@@ -1,4 +1,4 @@
-'From Cuis 4.1 of 12 December 2012 [latest update: #1576] on 23 January 2013 at 2:03:19 pm'!
+'From Cuis 4.1 of 12 December 2012 [latest update: #1576] on 24 January 2013 at 8:52:40 am'!
 'Description Please enter a description for this package.'!
 !classDefinition: #ExternalAddress category: #'FFI-Kernel'!
 ByteArray variableByteSubclass: #ExternalAddress
@@ -100,46 +100,6 @@ Object subclass: #ExternalType
 ExternalType class
 	instanceVariableNames: ''!
 
-!classDefinition: #FFIPluginTests category: #'FFI-Tests'!
-TestCase subclass: #FFIPluginTests
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'FFI-Tests'!
-!classDefinition: 'FFIPluginTests class' category: #'FFI-Tests'!
-FFIPluginTests class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFITestLibrary category: #'FFI-Tests'!
-ExternalLibrary subclass: #FFITestLibrary
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'FFI-Tests'!
-!classDefinition: 'FFITestLibrary class' category: #'FFI-Tests'!
-FFITestLibrary class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFITestPoint2 category: #'FFI-Tests'!
-ExternalStructure subclass: #FFITestPoint2
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'FFI-Tests'!
-!classDefinition: 'FFITestPoint2 class' category: #'FFI-Tests'!
-FFITestPoint2 class
-	instanceVariableNames: ''!
-
-!classDefinition: #FFITestPoint4 category: #'FFI-Tests'!
-ExternalStructure subclass: #FFITestPoint4
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'FFI-Tests'!
-!classDefinition: 'FFITestPoint4 class' category: #'FFI-Tests'!
-FFITestPoint4 class
-	instanceVariableNames: ''!
-
 
 !ExternalAddress commentStamp: '<historical>' prior: 0!
 An ExternalAddress is an opaque handle to objects outside Smalltalk memory (e.g., a pointer).!
@@ -167,18 +127,6 @@ This class provides an abstract base for all structures that can be used by exte
 
 !ExternalType commentStamp: '<historical>' prior: 0!
 An external type represents the type of external objects.Instance variables:	compiledSpec	<WordArray>		Compiled specification of the external type	referentClass	<Behavior | nil>	Class type of argument required	referencedType	<ExternalType>	Associated (non)pointer type with the receiverCompiled Spec:The compiled spec defines the type in terms which are understood by the VM. Each word is defined as:	bits 0...15 	- byte size of the entity	bit 16		- structure flag (FFIFlagStructure)				  This flag is set if the following words define a structure	bit 17		- pointer flag (FFIFlagPointer)				  This flag is set if the entity represents a pointer to another object	bit 18		- atomic flag (FFIFlagAtomic)				  This flag is set if the entity represents an atomic type.				  If the flag is set the atomic type bits are valid.	bits 19...23	- unused	bits 24...27	- atomic type (FFITypeVoid ... FFITypeDoubleFloat)	bits 28...31	- unusedNote that all combinations of the flags FFIFlagPointer, FFIFlagAtomic, and FFIFlagStructure are invalid, EXCEPT from the following:	FFIFlagPointer + FFIFlagAtomic:		This defines a pointer to an atomic type (e.g., 'char*', 'int*').		The actual atomic type is represented in the atomic type bits.	FFIFlagPointer + FFIFlagStructure:		This defines a structure which is a typedef of a pointer type as in			typedef void* VoidPointer;			typedef Pixmap* PixmapPtr;		It requires a byte size of four (e.g. a 32bit pointer) to work correctly.[Note: Other combinations may be allowed in the future]!
-
-!FFIPluginTests commentStamp: '<historical>' prior: 0!
-SUnitized tests for the FFI (mostly the plugin side)!
-
-!FFITestLibrary commentStamp: 'ar 8/14/2006 23:06' prior: 0!
-ExternalLibrarty used in FFI tests!
-
-!FFITestPoint2 commentStamp: 'ar 8/14/2006 23:06' prior: 0!
-A class used for testing structures as arguments for the FFI.!
-
-!FFITestPoint4 commentStamp: 'ar 8/14/2006 23:06' prior: 0!
-A class used for testing structures as arguments for the FFI.!
 
 !ByteArray methodsFor: '*FFI-Kernel' stamp: 'ar 1/28/2000 17:45'!
 asExternalPointer	"Convert the receiver assuming that it describes a pointer to an object."	^(ExternalAddress new)		basicAt: 1 put: (self byteAt: 1);		basicAt: 2 put: (self byteAt: 2);		basicAt: 3 put: (self byteAt: 3);		basicAt: 4 put: (self byteAt: 4);	yourself! !
@@ -827,171 +775,6 @@ initializeErrorConstants	"FFIConstants initializeErrorConstants"	"No callout 
 
 !FFIConstants class methodsFor: 'pool initialization' stamp: 'ar 5/18/2003 18:34'!
 initializeTypeConstants	"type void"	FFITypeVoid := 0.	"type bool"	FFITypeBool := 1.	"basic integer types.	note: (integerType anyMask: 1) = integerType isSigned"	FFITypeUnsignedByte := 2.	FFITypeSignedByte := 3.	FFITypeUnsignedShort := 4.	FFITypeSignedShort := 5.	FFITypeUnsignedInt := 6.	FFITypeSignedInt := 7.	"64bit types"	FFITypeUnsignedLongLong := 8.	FFITypeSignedLongLong := 9.	"special integer types"	FFITypeUnsignedChar := 10.	FFITypeSignedChar := 11.	"float types"	FFITypeSingleFloat := 12.	FFITypeDoubleFloat := 13.	"type flags"	FFIFlagAtomic := 16r40000. "type is atomic"	FFIFlagPointer := 16r20000. "type is pointer to base type"	FFIFlagStructure := 16r10000. "baseType is structure of 64k length"	FFIStructSizeMask := 16rFFFF. "mask for max size of structure"	FFIAtomicTypeMask := 16r0F000000. "mask for atomic type spec"	FFIAtomicTypeShift := 24. "shift for atomic type"! !
-
-!FFIPluginTests methodsFor: 'external form tests' stamp: 'tbn 4/26/2012 14:15'!
-testBlitToAndFromExternalForm	"Ensure that we can blit to/from all 4 permutatations of Form and ExternalForm."	| source external1 external2 destination |	source := Cursor wait asCursorForm asFormOfDepth: 32.	destination := Form extent: source extent depth: 32.	external1 := ExternalForm extent: source extent depth: 32.	external1 allocateSpace.	external2 := ExternalForm extent: source extent depth: 32.	external2 allocateSpace.	self shouldnt: [source bits = destination bits].	source displayOn: external1.	external1 displayOn: external2.	external2 displayOn: destination.	self should: [source bits = destination bits].! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'hjh 1/23/2013 13:56'!
-testConstructedCharCall	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiTestChars' module: FFITestLibrary moduleName 		callType: 0 returnType: ExternalType char		argumentTypes: ((1 to: 4) collect:[:i| ExternalType char]).	result := meth invokeWith: $A with: 65 with: 65.0 with: true.	self assert: result class = Character.	self assert: result asciiValue = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:22'!
-testConstructedDoubleCall	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiTestDoubles' module: FFITestLibrary moduleName 		callType: 0 returnType: ExternalType double		argumentTypes: ((1 to: 2) collect:[:i| ExternalType double]).	result := meth invokeWithArguments: (Array with: 41 with: true).	self assert: result = 42.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:21'!
-testConstructedFloatCall	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiTestFloats' module: FFITestLibrary moduleName 		callType: 0 returnType: ExternalType float		argumentTypes: ((1 to: 2) collect:[:i| ExternalType float]).	result := meth invokeWith: $A with: 65.0.	self assert: result = 130.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:20'!
-testConstructedIntCall	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiTestInts' module: FFITestLibrary moduleName		callType: 0 returnType: ExternalType long		argumentTypes: ((1 to: 4) collect:[:i| ExternalType long]).	result := meth invokeWith: $A with: 65 with: 65.0 with: true.	self assert: result = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:22'!
-testConstructedPrintString	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiPrintString' module: FFITestLibrary moduleName 		callType: 0 returnType: ExternalType string		argumentTypes: ((1 to: 1) collect:[:i| ExternalType string]).	result := meth invokeWith:'Hello World!!'.	self assert: result = 'Hello World!!'.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:20'!
-testConstructedShortCall	"Test using generic FFI spec"	| result meth |	meth := ExternalLibraryFunction		name:'ffiTestShorts' module: FFITestLibrary moduleName 		callType: 0 returnType: ExternalType short		argumentTypes: ((1 to: 4) collect:[:i| ExternalType short]).	result := meth invokeWithArguments: (Array with: $A with: 65 with: 65.0 with: true).	self assert: result = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'hjh 1/23/2013 13:55'!
-testGenericCharCall	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiTestChar: $A with: 65 with: 65.0 with: true.	self assert: result class = Character.	self assert: result asciiValue = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testGenericDoubleCall	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiTestDoubles: $A with: 65.0.	self assert: result = 130.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testGenericFloatCall	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiTestFloats: $A with: 65.0.	self assert: result = 130.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testGenericIntCall	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiTestInt: $A with: 65 with: 65.0 with: true.	self assert: result = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testGenericPrintString	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiPrintString:'Hello World!!'.	self assert: result = 'Hello World!!'.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:18'!
-testGenericShortCall	"Test using generic FFI spec"	| result |	result := FFITestLibrary ffiTestShort: $A with: 65 with: 65.0 with: true.	self assert: result = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'hjh 1/23/2013 13:53'!
-testLibraryCharCall	"Test using call from ExternalLibrary"	| result |	result := FFITestLibrary new ffiTestChar: $A with: 65 with: 65.0 with: true.	self assert: result class = Character.	self assert: result asciiValue = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testLibraryDoubleCall	"Test using call from ExternalLibrary"	| result |	result := FFITestLibrary new ffiTestDoubles: $A with: 65.0.	self assert: result = 130.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testLibraryFloatCall	"Test using call from ExternalLibrary"	| result |	result := FFITestLibrary new ffiTestFloats: $A with: 65.0.	self assert: result = 130.0! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testLibraryIntCall	"Test using call from ExternalLibrary"	| result |	result := FFITestLibrary new ffiTestInt: $A with: 65 with: 65.0 with: true.	self assert: result = 130.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 8/14/2006 19:17'!
-testLibraryPrintString	"Test using call from ExternalLibrary"	| result |	result := FFITestLibrary new ffiPrintString:'Hello World!!'.	self assert: result = 'Hello World!!'.! !
-
-!FFIPluginTests methodsFor: 'structure tests' stamp: 'ar 8/14/2006 19:23'!
-testLongLongs	"Test passing and returning longlongs"	| long1 long2 long3 |	long1 := 16r123456789012.	long2 := (-1 << 31).	long3 := FFITestLibrary ffiTestLongLong: long1 with: long2.	self assert: long3 = (long1 + long2)! !
-
-!FFIPluginTests methodsFor: 'structure tests' stamp: 'ar 8/14/2006 19:24'!
-testPoint2	"Test passing and returning up of structures >32bit and <= 64 bit"	| pt1 pt2 pt3 |	pt1 := FFITestPoint2 new.	pt1 x: 1. pt1 y: 2.	pt2 := FFITestPoint2 new.	pt2 x: 3. pt2 y: 4.	pt3 := FFITestLibrary ffiTestPoint2: pt1 with: pt2.	self assert: pt3 x = 4.	self assert: pt3 y = 6.! !
-
-!FFIPluginTests methodsFor: 'structure tests' stamp: 'ar 8/14/2006 19:25'!
-testPoint4	"Test passing and returning up of structures > 64 bit"	| pt1 pt2 pt3 |	pt1 := FFITestPoint4 new.	pt1 x: 1. pt1 y: 2. pt1 z: 3. pt1 w: 4.	pt2 := FFITestPoint4 new.	pt2 x: 5. pt2 y: 6. pt2 z: 7. pt2 w: 8.	pt3 := FFITestLibrary ffiTestPoint4: pt1 with: pt2.	self assert: pt3 x = 6.	self assert: pt3 y = 8.	self assert: pt3 z = 10.	self assert: pt3 w = 12.! !
-
-!FFIPluginTests methodsFor: 'structure tests' stamp: 'ar 8/14/2006 19:25'!
-testPointers	"Test passing and returning of pointers to structs"	| pt1 pt2 pt3 |	pt1 := FFITestPoint4 new.	pt1 x: 1. pt1 y: 2. pt1 z: 3. pt1 w: 4.	pt2 := FFITestPoint4 new.	pt2 x: 5. pt2 y: 6. pt2 z: 7. pt2 w: 8.	pt3 := FFITestLibrary ffiTestPointers: pt1 with: pt2.	self assert: pt3 x = 6.	self assert: pt3 y = 8.	self assert: pt3 z = 10.	self assert: pt3 w = 12.! !
-
-!FFIPluginTests methodsFor: 'simple tests' stamp: 'ar 7/28/2009 20:53'!
-testUlongRange	"Simple test for making sure the FFI can call certain numbers in the ulong range"	| result |	self shouldnt:[result := FFITestLibrary ffiTestUlong: 3103854339 with: 3103854339 with: 3103854339 with: 3103854339] raise: Error.	self should: result =  1912741382.! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 21:59'!
-ffiPrintString: aString	"FFITestLibrary new ffiPrintString: 'Hello'"	<cdecl: char* 'ffiPrintString' (char *)>	^self externalCallFailed! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 21:59'!
-ffiTestChar: c1 with: c2 with: c3 with: c4	"FFITestLibrary new ffiTestChar: $A with: 65 with: 65.0 with: true"	<cdecl: char 'ffiTestChars' (char char char char)>	^self externalCallFailed! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 22:00'!
-ffiTestDoubles: f1 with: f2	"FFITestLibrary new ffiTestDoubles: $A with: 65.0"	<cdecl: double 'ffiTestDoubles' (double double)>	^self externalCallFailed! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 22:00'!
-ffiTestFloats: f1 with: f2	"FFITestLibrary new ffiTestFloats: $A with: 65.0"	<cdecl: float 'ffiTestFloats' (float float)>	^self externalCallFailed! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 22:00'!
-ffiTestInt: c1 with: c2 with: c3 with: c4	"FFITestLibrary new ffiTestInt: $A with: 65 with: 65.0 with: $A"	<cdecl: long 'ffiTestInts' (long long long long)>	^self externalCallFailed! !
-
-!FFITestLibrary methodsFor: 'primitives' stamp: 'ar 8/29/2011 22:00'!
-ffiTestShort: c1 with: c2 with: c3 with: c4	"FFITestLibrary new ffiTestShort: $A with: 65 with: 65.0 with: $A"	<cdecl: short 'ffiTestShorts' (short short short short)>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:27'!
-ffiPrintString: aString	"FFITestLibrary ffiPrintString: 'Hello'"	<cdecl: char* 'ffiPrintString' (char *) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:27'!
-ffiTestChar: c1 with: c2 with: c3 with: c4	"FFITestLibrary ffiTestChar: $A with: 65 with: 65.0 with: true"	<cdecl: char 'ffiTestChars' (char char char char) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:27'!
-ffiTestDoubles: f1 with: f2	"FFITestLibrary ffiTestDoubles: $A with: 65.0"	<cdecl: double 'ffiTestDoubles' (double double) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:27'!
-ffiTestFloats: f1 with: f2	"FFITestLibrary ffiTestFloats: $A with: 65.0"	<cdecl: float 'ffiTestFloats' (float float) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:28'!
-ffiTestInt: c1 with: c2 with: c3 with: c4	"FFITestLibrary ffiTestInt: $A with: 65 with: 65.0 with: true"	<cdecl: long 'ffiTestInts' (long long long long) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/29/2011 22:01'!
-ffiTestLongLong: long1 with: long2	"FFITestLibrary ffiTestLongLong: 3 with: 4"	<cdecl: longlong 'ffiTestLongLong' (longlong longlong) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 11/28/1999 19:51'!
-ffiTestPoint2: pt1 with: pt2	<cdecl: FFITestPoint2 'ffiTestStruct64' (FFITestPoint2 FFITestPoint2) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 11/28/1999 19:51'!
-ffiTestPoint4: pt1 with: pt2	<cdecl: FFITestPoint4 'ffiTestStructBig' (FFITestPoint4 FFITestPoint4) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 12/1/1999 16:39'!
-ffiTestPointers: pt1 with: pt2	<cdecl: FFITestPoint4* 'ffiTestPointers' (FFITestPoint4* FFITestPoint4*) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 8/14/2006 19:28'!
-ffiTestShort: c1 with: c2 with: c3 with: c4	"FFITestLibrary ffiTestShort: $A with: 65 with: 65.0 with:1"	<cdecl: short 'ffiTestShorts' (short short short short) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'primitives' stamp: 'ar 7/28/2009 18:14'!
-ffiTestUlong: c1 with: c2 with: c3 with: c4	"FFITestLibrary ffiTestUlong: 3103854339 with: 3103854339 with: 3103854339 with: 3103854339"	<cdecl: long 'ffiTestInts' (ulong ulong ulong ulong) module:'SqueakFFIPrims'>	^self externalCallFailed! !
-
-!FFITestLibrary class methodsFor: 'accessing' stamp: 'ar 11/28/1999 19:51'!
-moduleName	"Use the fully qualified VM name so we ensure testing loading a library"	^'SqueakFFIPrims'! !
-
-!FFITestPoint2 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:42'!
-x	"This method was automatically generated"	^handle signedLongAt: 1! !
-
-!FFITestPoint2 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:42'!
-x: anObject	"This method was automatically generated"	handle signedLongAt: 1 put: anObject! !
-
-!FFITestPoint2 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:42'!
-y	"This method was automatically generated"	^handle signedLongAt: 5! !
-
-!FFITestPoint2 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:42'!
-y: anObject	"This method was automatically generated"	handle signedLongAt: 5 put: anObject! !
-
-!FFITestPoint2 class methodsFor: 'field definition' stamp: 'ar 12/1/1999 16:42'!
-fields	"FFITestPoint2 defineFields"	^#(		(x	'long')		(y	'long')	)! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-w	"This method was automatically generated"	^handle signedLongAt: 13! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-w: anObject	"This method was automatically generated"	handle signedLongAt: 13 put: anObject! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-x	"This method was automatically generated"	^handle signedLongAt: 1! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-x: anObject	"This method was automatically generated"	handle signedLongAt: 1 put: anObject! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-y	"This method was automatically generated"	^handle signedLongAt: 5! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-y: anObject	"This method was automatically generated"	handle signedLongAt: 5 put: anObject! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-z	"This method was automatically generated"	^handle signedLongAt: 9! !
-
-!FFITestPoint4 methodsFor: 'accessing' stamp: 'ar 12/1/1999 16:41'!
-z: anObject	"This method was automatically generated"	handle signedLongAt: 9 put: anObject! !
-
-!FFITestPoint4 class methodsFor: 'field definition' stamp: 'ar 12/1/1999 16:41'!
-fields	"FFITestPoint4 defineFields"	^#(		(x	'long')		(y	'long')		(z	'long')		(w	'long')	)! !
 
 !Object methodsFor: '*FFI-Kernel' stamp: 'ar 8/14/2006 23:02'!
 externalCallFailed	"Raise an error after a failed call to an external function"	| errCode |	errCode := ExternalFunction getLastError. "this allows us to look at the actual error code"	^self error: (ExternalFunction errorMessageFor: errCode).! !

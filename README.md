@@ -33,6 +33,7 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
         slash _ FileDirectory slash.
         {
              '..', slash, 'Cuis-FFI', slash, 'FFI.pck.st' .
+			 '..', slash, 'Cuis-FFI', slash, 'FFI-Tests.pck.st' .
         }
 
         do:
