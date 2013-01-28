@@ -65,4 +65,4 @@ Here in the folder 'original' there are the Monticello files from http://source.
 
 They have been included, see PortingNotes.md in the notes subdirectory. This newly includes the FFI-Tests package.
 
-3 tests still fail.
+All 23 tests are green.
