@@ -26,9 +26,9 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
 
 ### Installation
 
-    "Load Foreign Function Interface (FFI)"
+       "Load Foreign Function Interface (FFI)"
 
-    | slash |
+        | slash |
 
         slash _ FileDirectory slash.
         {
@@ -41,7 +41,11 @@ http://jvuletich.org/pipermail/cuis_jvuletich.org/2013-January/000556.html
         [ :fileName | CodePackageFile installPackageStream:
 	
                      (FileStream concreteStream readOnlyFileNamed: fileName)
-        ]   
+        ].
+
+       "Initialisation for tests"
+       (Smalltalk at: #FFITestPoint2) perform: #defineFields.
+       (Smalltalk at: #FFITestPoint4) perform: #defineFields.   
 
 		
 ### Test in MSWindows 7
