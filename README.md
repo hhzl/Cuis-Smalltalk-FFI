@@ -10,6 +10,9 @@ The port contains
 * FFI-Pools
 * FFI-Tests
 
+### Status
+Do not use this repository as it has been integrated into Cuis-Smalltalk-Dev. After the documentation has been moved 
+as well it will be deleted.
 
 ### What is FFI and what is it used for?
 
