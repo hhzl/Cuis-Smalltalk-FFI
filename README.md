@@ -1,4 +1,4 @@
-Cuis-FFI
+Cuis-FFI for version 4.1
 ========
 
 FFI port from http://source.squeak.org/FFI for Cuis Smalltalk https://github.com/jvuletich/Cuis
@@ -11,8 +11,12 @@ The port contains
 * FFI-Tests
 
 ### Status
-Do not use this repository as it has been integrated into Cuis-Smalltalk-Dev. After the documentation has been moved 
-as well it will be deleted.
+Do not use this repository for version 4.2 and later as it has been integrated into Cuis-Smalltalk-Dev.
+In Cuis 4.2 just do
+
+      Feature require: 'FFITests'
+
+
 
 ### What is FFI and what is it used for?
 
